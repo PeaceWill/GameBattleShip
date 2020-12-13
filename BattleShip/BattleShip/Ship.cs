@@ -15,8 +15,8 @@ namespace BattleShip
         }
         public Rocket rocketFire()
         {
-            Image boom = Image.FromFile("./image/boom.png");
-            Image rocket = Image.FromFile("./image/rocket.png");
+            Image boom = Image.FromFile(@"boom.png");
+            Image rocket = Image.FromFile(@"rocket.png");
             return new Rocket(boom, rocket, new Point(this.location.X, this.location.Y - this.size.Height), this.size, 10);
                  
         }

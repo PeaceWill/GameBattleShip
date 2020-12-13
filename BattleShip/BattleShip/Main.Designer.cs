@@ -30,12 +30,17 @@ namespace BattleShip
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.update = new System.Windows.Forms.Timer(this.components);
+            this.updateStones = new System.Windows.Forms.Timer(this.components);
+            this.updateRocket = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // update
+            // updateStones
             // 
-            this.update.Tick += new System.EventHandler(this.update_Tick);
+            this.updateStones.Tick += new System.EventHandler(this.update_Tick);
+            // 
+            // updateRocket
+            // 
+            this.updateRocket.Tick += new System.EventHandler(this.updareRocket_Tick);
             // 
             // Main
             // 
@@ -51,7 +56,8 @@ namespace BattleShip
 
         #endregion
 
-        private System.Windows.Forms.Timer update;
+        private System.Windows.Forms.Timer updateStones;
+        private System.Windows.Forms.Timer updateRocket;
     }
 }
 

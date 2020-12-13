@@ -27,22 +27,22 @@ namespace BattleShip
         public Main()
         {
             InitializeComponent();
-            this.Width = 400;
-            this.Height = 700;
+            this.Width = 600;
+            this.Height = 600;
             this.BackColor = Color.Black;
             this.DoubleBuffered = true;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.ClientSize = new Size(400, 700);
+            this.ClientSize = new Size(600, 600);
 
             //object
-            Image img = Image.FromFile("./image/ship.png");
+            Image img = Image.FromFile(@"ship.png");
             ship = new Ship(img,
                             new Point(this.ClientSize.Width / 2 - 30, this.ClientSize.Height - 60),
                             new Size(60, 60), 10);
 
             stones = new List<Stone>();
             stoneSlice = MAX_STONE_SLICE;
-            stoneImg = Image.FromFile("./image/stone.png");
+            stoneImg = Image.FromFile(@"stone.png");
 
             random = new Random((int)DateTime.Now.Ticks);
 
@@ -50,22 +50,31 @@ namespace BattleShip
             score = 0;
             isGameOver = false;
 
-            // update frame
-            Timer update = new Timer();
-            update.Interval = 100;
-            update.Tick += update_Tick;
-            update.Start();
+            //
+            //Timer update = new Timer();
+
+            // timer stone
+            updateStones.Interval = 50;
+            updateStones.Tick += update_Tick;
+            updateStones.Start();
+
+            // timer rocket
+            updateRocket.Interval = 300;
+            updateRocket.Tick += updareRocket_Tick;
+            updateRocket.Start();
         }
 
+        //  update stone
         private void update_Tick(object sender, EventArgs e)
         {
             if (!isGameOver)
             {
-                for (int i =stones.Count - 1; i >= 0; i--)
+                for (int i = stones.Count - 1; i >= 0; i--)
                 {
                     if (ship.isImpact(stones[i]))
                     {
                         isGameOver = true;
+                        gameOver();
                     }
                     if (stones[i].isOutFrame(this.ClientSize))
                     {
@@ -87,32 +96,50 @@ namespace BattleShip
                 {
                     stoneSlice = MAX_STONE_SLICE;
                 }
+                this.Invalidate();
+            }
+        }
 
-                for (int i = rockets.Count - 1; i >= 0; i++)
+        // update rocket
+        private void updareRocket_Tick(object sender, EventArgs e)
+        {
+            rockets.Add(ship.rocketFire());
+            for (int i = rockets.Count - 1; i >= 0; i--)
+            {
+                if (rockets[i].IsBoom)
                 {
-                    if (rockets[i].IsBoom)
+                    rockets.RemoveAt(i);
+                    break;
+                }
+                bool isIpt = false;
+                foreach (var s in stones)
+                {
+                    if (rockets[i].isImpact(s))
                     {
-                        rockets.RemoveAt(i);
+                        isIpt = true;
+                        stones.Remove(s);
+                        score++;
+                        rockets[i].IsBoom = true;
                         break;
                     }
-                    bool isIpt = false;
-                    foreach (var s in stones)
-                    {
-                        if (rockets[i].isImpact(s))
-                        {
-                            isIpt = true;
-                            stones.Remove(s);
-                            score++;
-                            rockets[i].IsBoom = true;
-                            break;
-                        }
-                    }
-                    if (!isIpt)
-                    {
-                        rockets[i].Move(direction.Up);
-                    }
                 }
-                this.Invalidate();
+                if (!isIpt)
+                {
+                    rockets[i].Move(direction.Up);
+                }
+            }
+            this.Invalidate();
+        }
+
+        private void gameOver()
+        {
+            if (isGameOver)
+            {
+                this.updateStones.Stop();
+                this.updateRocket.Stop();
+                MessageBox.Show("Game Over");
+
+                this.Update();
             }
         }
 
@@ -144,7 +171,7 @@ namespace BattleShip
         private void Main_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switch (e.KeyCode)
-            {                
+            {
                 case Keys.Left:
                     ship.Move(direction.Left);
                     break;
@@ -169,7 +196,11 @@ namespace BattleShip
                 case Keys.D:
                     ship.Move(direction.Right);
                     break;
+                case Keys.Space:
+                    rockets.Add(ship.rocketFire());
+                    break;
             }
         }
+       
     }
 }
