@@ -60,7 +60,7 @@ namespace BattleShip
             updateStones.Start();
 
             // timer rocket
-            updateRocket.Interval = 300;
+            updateRocket.Interval = 100;
             updateRocket.Tick += updareRocket_Tick;
             updateRocket.Start();
         }
