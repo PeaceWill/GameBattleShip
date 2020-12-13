@@ -55,12 +55,12 @@ namespace BattleShip
             //Timer update = new Timer();
 
             // timer stone
-            updateStones.Interval = 50;
+            updateStones.Interval = 40;
             updateStones.Tick += update_Tick;
             updateStones.Start();
 
             // timer rocket
-            updateRocket.Interval = 100;
+            updateRocket.Interval = 400;
             updateRocket.Tick += updareRocket_Tick;
             updateRocket.Start();
         }
@@ -105,7 +105,7 @@ namespace BattleShip
         private void updareRocket_Tick(object sender, EventArgs e)
         {
             // auto fire
-            rockets.Add(ship.rocketFire());
+            //rockets.Add(ship.rocketFire());
 
             //
             for (int i = rockets.Count - 1; i >= 0; i--)
@@ -143,8 +143,6 @@ namespace BattleShip
                 this.updateStones.Stop();
                 this.updateRocket.Stop();
                 MessageBox.Show("Game Over");
-
-                
             }
         }
 
@@ -170,7 +168,6 @@ namespace BattleShip
             Font scoreFont = new Font(FontFamily.GenericSansSerif, 18);
             Size size = TextRenderer.MeasureText(strScore, scoreFont);
             g.DrawString(strScore, scoreFont, new SolidBrush(Color.White), new Point(0, this.ClientSize.Height - size.Height));
-
         }
 
         private void Main_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -209,6 +206,5 @@ namespace BattleShip
                     break;
             }
         }
-       
     }
 }
