@@ -27,6 +27,7 @@ namespace BattleShip
         public Main()
         {
             InitializeComponent();
+            //form
             this.Width = 600;
             this.Height = 600;
             this.BackColor = Color.Black;
@@ -103,7 +104,10 @@ namespace BattleShip
         // update rocket
         private void updareRocket_Tick(object sender, EventArgs e)
         {
+            // auto fire
             rockets.Add(ship.rocketFire());
+
+            //
             for (int i = rockets.Count - 1; i >= 0; i--)
             {
                 if (rockets[i].IsBoom)
@@ -131,6 +135,7 @@ namespace BattleShip
             this.Invalidate();
         }
 
+        // game over
         private void gameOver()
         {
             if (isGameOver)
@@ -139,7 +144,7 @@ namespace BattleShip
                 this.updateRocket.Stop();
                 MessageBox.Show("Game Over");
 
-                this.Update();
+                
             }
         }
 
@@ -169,9 +174,10 @@ namespace BattleShip
         }
 
         private void Main_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
+        {           
             switch (e.KeyCode)
             {
+                // phim di chuyen ship A,S,D,W va mui ten
                 case Keys.Left:
                     ship.Move(direction.Left);
                     break;
@@ -196,6 +202,8 @@ namespace BattleShip
                 case Keys.D:
                     ship.Move(direction.Right);
                     break;
+
+                // phim space de ban ten lua
                 case Keys.Space:
                     rockets.Add(ship.rocketFire());
                     break;
