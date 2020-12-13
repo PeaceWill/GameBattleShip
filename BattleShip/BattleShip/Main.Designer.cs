@@ -29,7 +29,13 @@ namespace BattleShip
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.update = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // update
+            // 
+            this.update.Tick += new System.EventHandler(this.update_Tick);
             // 
             // Main
             // 
@@ -38,12 +44,14 @@ namespace BattleShip
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "Main";
             this.Text = "Main";
-            this.Load += new System.EventHandler(this.Main_Load);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Main_PreviewKeyDown);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer update;
     }
 }
 
